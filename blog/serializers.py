@@ -4,7 +4,6 @@ from . import models
 
 
 class BlogSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField(many=False)
     class Meta:
         model = models.Blog
         fields='__all__'
