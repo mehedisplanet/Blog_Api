@@ -20,8 +20,8 @@ class BlogViewSet(viewsets.ModelViewSet):
     queryset = models.Blog.objects.all()
     serializer_class = serializers.BlogSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [filters.SearchFilter]
     pagination_class = BlogPagination
+    filter_backends = [filters.SearchFilter]
     search_fields = ['user__username','topic','title']
 
     def create(self, request, *args, **kwargs):
@@ -35,9 +35,11 @@ class BlogViewSet(viewsets.ModelViewSet):
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    queryset = models.Review.objects.none()
+    queryset = models.Review.objects.all()
     serializer_class = serializers.ReviewSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['blog__id']
 
     def create(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
