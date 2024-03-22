@@ -15,22 +15,35 @@ class BlogPagination(pagination.PageNumberPagination):
     max_page_size = 100
 
 
-
 class BlogViewSet(viewsets.ModelViewSet):
     queryset = models.Blog.objects.all()
     serializer_class = serializers.BlogSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = BlogPagination
     filter_backends = [filters.SearchFilter]
-    search_fields = ['user__username','topic','title']
+    search_fields = ['user__username','user__id','topic','title']
 
     def create(self, request, *args, **kwargs):
         # Check if user is authenticated
         if not request.user.is_authenticated:
             return Response({"detail": "Authentication credentials were not provided."},
                             status=status.HTTP_401_UNAUTHORIZED)
-        # If user is authenticated, proceed with creating the blog
-        return super().create(request, *args, **kwargs)
+        # Set the user for the blog post before saving
+        request.data['user'] = request.user.pk
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Check if the requesting user is the creator of the blog
+        if request.user == instance.user:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({"detail": "You don't have permission to perform this action."},
+                            status=status.HTTP_403_FORBIDDEN)
 
 
 
