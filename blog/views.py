@@ -19,7 +19,6 @@ class BlogViewSet(viewsets.ModelViewSet):
     queryset = models.Blog.objects.all()
     serializer_class = serializers.BlogSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    pagination_class = BlogPagination
     filter_backends = [filters.SearchFilter]
     search_fields = ['user__username','user__id','topic','title']
 
