@@ -27,7 +27,7 @@ class UserRegistrationApiView(APIView):
             email_body = f"Please confirm your email by clicking the following link: {confirm_link}"
             
             email = EmailMultiAlternatives(email_subject , '', to=[user.email])
-            email.attach_alternative(email_body, "text/plain")
+            email.attach_alternative(email_body, "text/html")
             email.send()
             return Response("Check your mail for confirmation")
         return Response(serializer.errors)
