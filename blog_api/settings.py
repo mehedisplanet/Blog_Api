@@ -38,12 +38,12 @@ CSRF_TRUSTED_ORIGINS = ['https://blog-w6km.onrender.com','https://*.127.0.0.1']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS=True
  
-CSRF_TRUSTED_ORIGINS = ['https://blog-w6km.onrender.com']
+# CSRF_TRUSTED_ORIGINS = ['https://blog-w6km.onrender.com']
  
  
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    'http://127.0.0.1:5500',
+    "https://localhost:8080",
+    'https://127.0.0.1:5500',
     'https://blog-w6km.onrender.com',
 ]
 CORS_ALLOW_METHODS = (
